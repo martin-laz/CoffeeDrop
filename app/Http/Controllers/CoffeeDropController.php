@@ -8,26 +8,31 @@ use GuzzleHttp\Client;
 class CoffeeDropController extends Controller
 {
 
-
     public function find($postcode){
+      //Uses getCoordinates to find latitude and longitude of a postcode
         $inputCoordinates =$this->getCoordinates($postcode);
+
         if(!is_array($inputCoordinates))
           return $inputCoordinates;
-
+      //Uses updateCoordinates to check if there are any new coffeedrop locations and add their lat and lon to db
         $dbpostcodes =   $this->updateCoordinates();
         $distances = [];
         foreach ($dbpostcodes as $location) {
-
+      //calculate the distances between the input and all db locations
           $distance = $this->getDistanceBetweenTwoPoints($inputCoordinates,array('latitude' => $location->latitude,'longitude' => $location->longitude));
           $distances[$location->postcode] = $distance;
         }
+        //compares distances
         $closestCoffeeDrop = min(array_keys($distances, min($distances)));
 
-        return CoffeeDrop::where('postcode', $closestCoffeeDrop)->first();
+        $closestCoffeeDropInfo = CoffeeDrop::where('postcode', $closestCoffeeDrop)->first();
+        return response()->json(['information' => $closestCoffeeDropInfo]);
     }
     public function calculate(Request $request){
+      //calculate toatl pods
       $amountofpods = $this->calculateAmount($request->all());
       $cashback = 0;
+      //checks which formula to use
       if($amountofpods <= 50 ){
         foreach ($request->all() as $key => $value) {
           switch ($key) {
@@ -73,7 +78,7 @@ class CoffeeDropController extends Controller
           }
         }
       }
-      return $cashback/100 . ' pounds';
+      return response()->json(['pounds' => $cashback/100]);
     }
     public function calculateAmount($input){
       $amountofpods = 0;
@@ -83,11 +88,12 @@ class CoffeeDropController extends Controller
         return $amountofpods;
     }
     public function updateCoordinates(){
+      // Finds coffeedrops without lat and lon values
       $newCoffeeDrops= CoffeeDrop::select('postcode')->whereNull('latitude')->pluck('postcode');
       foreach ($newCoffeeDrops as $postcode) {
         $coordinates = $this->getCoordinates($postcode);
 
-
+      //adds lat and lon value based on results from http://postcodes.io/
         CoffeeDrop::where('postcode', $postcode)->update(array('latitude'=>$coordinates['latitude'],'longitude'=>$coordinates['longitude']));
 
       }
@@ -95,6 +101,7 @@ class CoffeeDropController extends Controller
       return CoffeeDrop::select('postcode','latitude','longitude')->get();;
     }
     public function create(Request $request){
+      //translates request body to db column names
        $data = [];
         foreach ($request->all() as $key => $value) {
           if ($key=='postcode')
@@ -112,7 +119,7 @@ class CoffeeDropController extends Controller
             }
           }
         }
-
+        //creates new coffeedrop
         $coffeeDrop = CoffeeDrop::create($data);
         return response()->json($coffeeDrop, 201);
 
