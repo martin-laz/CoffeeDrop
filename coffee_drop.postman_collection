@@ -1,0 +1,109 @@
+{
+	"info": {
+		"_postman_id": "a653133e-14ad-4eff-a1f9-6810c80ac1ba",
+		"name": "cd",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://localhost/CoffeeDropAPI/public/api/coffeedrop",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"postcode\":\"SW1A 1AA\",\r\n  \"opening_times\" : [{\"monday\" : \"09:00\", \"tuesday\" : \"09:00\", \"saturday\" : \"08:30\"}],\r\n  \"closing_times\" : [{\"monday\" : \"19:00\", \"tuesday\" : \"19:00\", \"saturday\" : \"18:30\"}]\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost/CoffeeDropAPI/public/api/coffeedrop",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"CoffeeDropAPI",
+						"public",
+						"api",
+						"coffeedrop"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost/CoffeeDropAPI/public/api/cashback",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n \"Ristretto\": 101,\n \"Espresso\": 101,\n \"Lungo\":300\n }"
+				},
+				"url": {
+					"raw": "http://localhost/CoffeeDropAPI/public/api/cashback",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"CoffeeDropAPI",
+						"public",
+						"api",
+						"cashback"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost/CoffeeDropAPI/public/api/coffeedrop/b11lw",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost/CoffeeDropAPI/public/api/coffeedrop/b11lw",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"CoffeeDropAPI",
+						"public",
+						"api",
+						"coffeedrop",
+						"b11lw"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

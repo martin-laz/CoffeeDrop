@@ -23,9 +23,6 @@ class CoffeeDropController extends Controller
         }
         $closestCoffeeDrop = min(array_keys($distances, min($distances)));
 
-
-
-
         return CoffeeDrop::where('postcode', $closestCoffeeDrop)->first();
     }
     public function calculate(Request $request){
